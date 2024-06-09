@@ -60,6 +60,7 @@
 - Ensure that your Directus instance URL and Google Sheet structure match the setup described above.
 - Update the folder ID in the script where images are to be uploaded in Directus.
 - This setup assumes you have appropriate permissions set up in Directus for the API operations.
+- To check for the directus schema use: [schema_collection_details.py](schema_collection_details.py)
 
 ## Troubleshooting
 
