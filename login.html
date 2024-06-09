@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+      }
+      h1, h2 {
+        text-align: center;
+      }
+      #login-form, #logs {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      label {
+        margin-top: 10px;
+      }
+      input {
+        margin-bottom: 10px;
+        padding: 5px;
+        width: 200px;
+      }
+      button {
+        margin: 5px;
+        padding: 10px 20px;
+        font-size: 14px;
+      }
+      .modal-title {
+        display: none; /* Hide the modal title */
+      }
+    </style>
+    <script>
+      let uploadType = ''; // Variable to store the type of upload
+
+      function submitLogin() {
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+
+        // Hide login form and show logs immediately
+        document.getElementById('login-form').style.display = 'none';
+        const logsContainer = document.getElementById('logs');
+        logsContainer.style.display = 'block';
+        document.getElementById('logs-heading').innerText = 'Directus Logs';
+
+        if (uploadType === 'assets') {
+          google.script.run
+            .withSuccessHandler(showLogs)
+            .uploadShareableAssets(email, password);
+        } else if (uploadType === 'stories') {
+          google.script.run
+            .withSuccessHandler(showLogs)
+            .uploadSuccessStories(email, password);
+        }
+      }
+
+      function setUploadType(type) {
+        uploadType = type;
+      }
+
+      function showLogs(logs) {
+        const logsContainer = document.getElementById('logs-content');
+        logsContainer.innerHTML = logs.join('<br>');
+      }
+    </script>
+  </head>
+  <body>
+    <div id="login-form">
+      <h2>Directus Login</h2>
+      <label for="email">Email:</label>
+      <input type="text" id="email" name="email"><br><br>
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password"><br><br>
+      <button onclick="setUploadType('assets'); submitLogin();">Shareable Assets</button>
+      <button onclick="setUploadType('stories'); submitLogin();">Success Stories</button>
+    </div>
+    <div id="logs" style="display:none;">
+      <h2 id="logs-heading">Directus Logs</h2>
+      <div id="logs-content"></div>
+    </div>
+  </body>
+</html>
