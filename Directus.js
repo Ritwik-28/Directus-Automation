@@ -16,7 +16,7 @@ function showLoginDialog() {
 }
 
 function uploadShareableAssets(email, password) {
-  const DIRECTUS_URL = 'http://yourdirectus.instance.com';
+  const DIRECTUS_URL = 'http://directus.crio.do';
   logs = [];  // Reset logs for this session
 
   function log(message) {
@@ -132,25 +132,27 @@ function uploadSuccessStories(email, password) {
     const row = data[i];
     log(`Checking row ${i + 1}: ${JSON.stringify(row)}`);
     
-    if (row[0] === "" && row[1] === "" && row[2] === "") { // Skip completely empty rows
+    if (row[0] === "" && row[1] === "" && row[2] === "" && row[3] === "") { // Skip completely empty rows
       log(`Skipping completely empty row ${i + 1}`);
       continue;
     }
     
-    if (row[4] && row[4].toLowerCase() === "done") { // Skip rows marked as done in Col E (index 4)
+    if (row[5] && row[5].toLowerCase() === "done") { // Skip rows marked as done in Col F (index 5)
       log(`Row ${i + 1} is already marked as done. Skipping.`);
       continue;
     }
 
     const learnerImage = row[0];
     const programDetail = row[1];
-    const companyName = row[2];
-    const directusId = row[3];
-    const status = row[4];
+    const date = row[2];
+    const companyName = row[3];
+    const directusId = row[4];
+    const status = row[5];
 
     log(`Processing row ${i + 1}`);
     log(`Learner Image: ${learnerImage}`);
     log(`Program Detail: ${programDetail}`);
+    log(`Date: ${date}`);
     log(`Company Name: ${companyName}`);
     log(`DirectUs Id: ${directusId}`);
     log(`Status: ${status}`);
@@ -168,6 +170,7 @@ function uploadSuccessStories(email, password) {
       status: "published",
       learner_image: imageUrl,
       program_detail: programDetail,
+      date: date, // Add the new date field
       company_name: companyName
     };
     
@@ -175,8 +178,8 @@ function uploadSuccessStories(email, password) {
     
     if (directusResponse) {
       log(`Success story uploaded. DirectUs ID: ${directusResponse.id}`);
-      sheet.getRange(i + 1, 4).setValue(directusResponse.id); // Update DirectUs Id in column D
-      sheet.getRange(i + 1, 5).setValue("Done"); // Update Status in column E to "Done"
+      sheet.getRange(i + 1, 5).setValue(directusResponse.id); // Update DirectUs Id in column E
+      sheet.getRange(i + 1, 6).setValue("Done"); // Update Status in column F to "Done"
     } else {
       log(`Failed to upload success story for row ${i + 1}`);
     }
