@@ -30,9 +30,10 @@
 
 - **Column A**: Link to the learner image in Google Drive.
 - **Column B**: Program detail.
-- **Column C**: Company name.
-- **Column D**: Directus ID (to be updated after upload).
-- **Column E**: Status (to be marked as "Done" after successful upload).
+- **Column C**: Date.
+- **Column D**: Company name.
+- **Column E**: Directus ID (to be updated after upload).
+- **Column F**: Status (to be marked as "Done" after successful upload).
 
 ## Setup
 
